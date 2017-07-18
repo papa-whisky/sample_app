@@ -5,12 +5,12 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     get signup_path
 
     assert_no_difference 'User.count' do
-      post signup_path, params: {
-        user: {
-          name: '', email: 'user@invalid', password: 'foo',
-          password_confirmation: 'bar'
-        }
-      }
+      post signup_path, params: { user: {
+        name: '',
+        email: 'user@invalid',
+        password: 'foo',
+        password_confirmation: 'bar'
+      } }
     end
 
     assert_template 'users/new'
@@ -23,12 +23,12 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     get signup_path
 
     assert_difference 'User.count', 1 do
-      post signup_path, params: {
-        user: {
-          name: 'Example', email: 'user@example.com', password: 'foobar',
-          password_confirmation: 'foobar'
-        }
-      }
+      post signup_path, params: { user: {
+        name: 'Example',
+        email: 'user@example.com',
+        password: 'foobar',
+        password_confirmation: 'foobar'
+      } }
     end
 
     follow_redirect!
