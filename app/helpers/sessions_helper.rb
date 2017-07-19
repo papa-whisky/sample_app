@@ -22,11 +22,11 @@ module SessionsHelper
   end
 
   def current_user
-    if session[:user_id]
+    if session[:user_id].present?
       @current_user ||= User.find_by(id: session[:user_id])
-    elsif cookies.signed[:user_id]
+    elsif cookies.signed[:user_id].present?
       user = User.find_by(id: cookies.signed[:user_id])
-      return unless user.try(:authenticated?, cookies[:remember_token])
+      return unless authenticated?(user)
       log_in user
       @current_user = user
     end
@@ -47,5 +47,11 @@ module SessionsHelper
 
   def store_location
     session[:forwarding_url] = request.original_url if request.get?
+  end
+
+  private
+
+  def authenticated?(user)
+    user.try(:authenticated?, :remember, cookies[:remember_token])
   end
 end
